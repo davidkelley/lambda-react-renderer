@@ -48,6 +48,8 @@ paths:
               type: "string"
             Access-Control-Allow-Origin:
               type: "string"
+            Content-Type:
+              type: "string"
         "400":
           description: A 400 error occurred
           schema:
@@ -67,6 +69,7 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Headers: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Content-Type: "integration.response.header.Content-Type"
         passthroughBehavior: when_no_match
     options:
       responses:

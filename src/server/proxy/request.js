@@ -3,10 +3,15 @@ export default class {
     this.event = event;
   }
 
+  get querystring() {
+    return this.event.queryStringParameters || {};
+  }
+
   get path() {
-    const { path, queryStringParameters } = this.event;
-    const mapper = key => `${key}=${queryStringParameters[key]}`;
-    const query = Object.keys(queryStringParameters).map(mapper).join('&');
+    const path = this.event.path || '/';
+    const { querystring } = this;
+    const mapper = key => `${key}=${querystring[key]}`;
+    const query = Object.keys(querystring).map(mapper).join('&');
     return `${path}?${query}`;
   }
 
@@ -27,7 +32,9 @@ export default class {
         resolve({
           body,
           statusCode: 200,
-          headers: {},
+          headers: {
+            'Content-Type': 'text/html',
+          },
         });
       } catch (err) {
         console.error(`"${err.toString()}"\n${JSON.stringify(this.event)}`);
