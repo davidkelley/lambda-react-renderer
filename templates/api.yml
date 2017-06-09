@@ -1,0 +1,106 @@
+swagger: "2.0"
+info:
+  title: app
+  version: 0.0.1
+schemes:
+  - https
+definitions:
+  Empty:
+    type: object
+    description: There is no schema
+    title: Empty Schema
+  Error:
+    type: object
+    title: Error Schema
+    description: There was an error processing the request
+    properties:
+      message:
+        type: string
+        description: The Amazon-generated or custom error message
+      type:
+        type: string
+        description: The type of error generated
+      __raw:
+        type: object
+        title: Raw Error
+        description: |
+          This object contains the raw message sent from the
+          underlying integration
+paths:
+  /{proxy+}:
+    x-amazon-apigateway-any-method:
+      produces:
+        - text/html
+      consumes:
+        - text/html
+      parameters:
+        - name: proxy
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: The page was rendered successfully
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Headers:
+              type: "string"
+            Access-Control-Allow-Origin:
+              type: "string"
+        "400":
+          description: A 400 error occurred
+          schema:
+            $ref: "#/definitions/Error"
+        "500":
+          description: A 500 error occurred
+          schema:
+            $ref: "#/definitions/Error"
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        credentials: "arn:aws:iam::{{ AccountId }}:role/${stageVariables.ExecutionRoleName}"
+        httpMethod: POST
+        uri: "arn:aws:apigateway:{{ Region }}:lambda:path//2015-03-31/functions/arn:aws:lambda:{{ Region }}:{{ AccountId }}:function:${stageVariables.ProxyFunction}/invocations"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'*'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: when_no_match
+    options:
+      responses:
+        "200":
+          description: 200 response
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: string
+            Access-Control-Allow-Methods:
+              type: string
+            Access-Control-Allow-Headers:
+              type: string
+            Access-Control-Max-Age:
+              type: string
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization'"
+              method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+              method.response.header.Access-Control-Max-Age: "'3600'"
+            responseTemplates:
+              application/json: |
+                {}
+        passthroughBehavior: when_no_match
+        requestParameters:
+          integration.request.header.Content-Type: "'application/json'"
+        requestTemplates:
+          application/json: |
+            {
+              "statusCode": 200
+            }
+        type: mock

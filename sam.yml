@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Transform: AWS::Serverless-2016-10-31
+
+Description: Isomorphic React Application Proxy
+
+Parameters:
+
+  Stage:
+    Type: String
+    Default: Development
+
+Resources:
+
+  Proxy:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.Proxy
+      Runtime: nodejs6.10
+      CodeUri: ./out
+      Timeout: 10
+
+  ProxyGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName:
+        Ref: Stage
+      DefinitionUri: ./artifacts/api.yml
+      Variables:
+        ProxyFunction:
+          Ref: Proxy
+        ExecutionRoleName:
+          Ref: ProxyGatewayExecutionRole
+
+  ProxyGatewayExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: "/"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action: sts:AssumeRole
+
+  ProxyGatewayExecutionPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: APIPermissions
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - lambda:*
+            Resource:
+              - Fn::GetAtt: [Proxy, Arn]
+      Roles:
+        - Ref: ProxyGatewayExecutionRole
