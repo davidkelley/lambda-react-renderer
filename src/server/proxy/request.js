@@ -5,9 +5,8 @@ export default class {
 
   get path() {
     const { path, queryStringParameters } = this.event;
-    const query = Object.keys(queryStringParameters).map((conc, key) => {
-      return `${key}=${queryStringParameters[key]}`;
-    }).join('&');
+    const mapper = key => `${key}=${queryStringParameters[key]}`;
+    const query = Object.keys(queryStringParameters).map(mapper).join('&');
     return `${path}?${query}`;
   }
 
@@ -22,7 +21,7 @@ export default class {
   }
 
   send() {
-    const { body, path } = this;
+    const { body } = this;
     return new Promise((resolve, reject) => {
       try {
         resolve({
