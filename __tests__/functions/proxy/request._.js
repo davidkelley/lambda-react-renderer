@@ -8,7 +8,7 @@ jest.mock('http');
 
 import http from 'http';
 
-import Request from '../../../src/server/proxy/request';
+import Request from '../../../src/lambda/proxy/request';
 
 describe('Request', () => {
   describe('#event', () => {

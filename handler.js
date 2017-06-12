@@ -1,3 +1,3 @@
-import Proxy from './src/server/proxy';
+import Proxy from './src/lambda/proxy';
 
 export { Proxy };
