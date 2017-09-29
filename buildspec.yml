@@ -18,8 +18,7 @@ phases:
       - mkdir artifacts
 
       - echo "Creating AWS Config file"
-      - 'echo "{ \"Region\": \"$AWS_REGION\", \"AccountId\": \"$AWS_ACCOUNT_ID\" }" > aws.json'
-      - cat aws.json
+      - node -e 'console.log(JSON.stringify(process.env))' > artifacts/build.json
 
   build:
     commands:
@@ -33,7 +32,7 @@ phases:
       - npm run build
 
       - echo "Compiling API template..."
-      - mustache aws.json api.yml > artifacts/api.yml
+      - mustache artifacts/build.json api.yml > artifacts/api.yml
 
       - echo "Compiling Cloudformation (Bucket $S3_BUCKET)..."
       - "aws cloudformation package --template-file service.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file artifacts/$TEMPLATE_FILE_NAME"

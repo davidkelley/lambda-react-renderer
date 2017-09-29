@@ -62,12 +62,11 @@ Resources:
       VersioningConfiguration:
         Status: Enabled
 
-  PipelineSNSTopic:
-    Type: AWS::SNS::Topic
-
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
+      Name:
+        Ref: Project
       RestartExecutionOnUpdate: false
       ArtifactStore:
         Location:
@@ -108,7 +107,7 @@ Resources:
               Configuration:
                 ProjectName:
                   Ref: Build
-        - Name: Test
+        - Name: Deploy
           Actions:
             - Name: Create
               RunOrder: 1
@@ -119,20 +118,19 @@ Resources:
                 Version: 1
               InputArtifacts:
                 - Name: BuildOutput
-                - Name: SourceOutput
               Configuration:
                 ActionMode: CHANGE_SET_REPLACE
                 Capabilities: CAPABILITY_IAM
                 RoleArn:
                   Fn::GetAtt: [CloudformationRole, Arn]
                 StackName:
-                    Fn::Sub: "${Project}-test-system"
+                  Ref: Project
                 ChangeSetName:
-                    Fn::Sub: "${Project}-test-system-changeset"
+                  Ref: Project
                 TemplatePath: BuildOutput::template.yml
-                ParameterOverrides: !Sub |
+                ParameterOverrides: |
                   {
-                    "RevisionId": { "Fn::GetArtifactAtt" : [ "SourceOutput", "revision" ] }
+                    "Version": { "Fn::GetParam": ["BuildOutput", "build.json", "CODEBUILD_RESOLVED_SOURCE_VERSION"] }
                   }
             - Name: Deploy
               RunOrder: 2
@@ -145,92 +143,18 @@ Resources:
                 ActionMode: CHANGE_SET_EXECUTE
                 Capabilities: CAPABILITY_IAM
                 ChangeSetName:
-                    Fn::Sub: "${Project}-test-system-changeset"
+                  Ref: Project
                 RoleArn:
                   Fn::GetAtt: [CloudformationRole, Arn]
                 StackName:
-                    Fn::Sub: "${Project}-test-system"
-            - Name: Approve
-              RunOrder: 5
-              ActionTypeId:
-                Category: Approval
-                Owner: AWS
-                Provider: Manual
-                Version: 1
-              Configuration:
-                NotificationArn:
-                  Ref: PipelineSNSTopic
-                CustomData:
-                  Fn::Sub: 'Do you want to create a change set against the production stack and delete the ${Project}-test stack?'
-            - Name: Delete
-              RunOrder: 7
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: 1
-              Configuration:
-                ActionMode: DELETE_ONLY
-                RoleArn:
-                  Fn::GetAtt: [CloudformationRole, Arn]
-                StackName:
-                    Fn::Sub: "${Project}-test-system"
-        - Name: Release
-          Actions:
-            - Name: Create
-              RunOrder: 1
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: 1
-              InputArtifacts:
-                - Name: BuildOutput
-              Configuration:
-                ActionMode: CHANGE_SET_REPLACE
-                Capabilities: CAPABILITY_IAM
-                RoleArn:
-                  Fn::GetAtt: [CloudformationRole, Arn]
-                StackName:
-                    Fn::Sub: "${Project}-release"
-                ChangeSetName:
-                    Fn::Sub: "${Project}-release-changeset"
-                TemplatePath: BuildOutput::template.yml
-            - Name: ApproveChangeSet
-              RunOrder: 2
-              ActionTypeId:
-                Category: Approval
-                Owner: AWS
-                Provider: Manual
-                Version: 1
-              Configuration:
-                NotificationArn:
-                  Ref: PipelineSNSTopic
-                CustomData:
-                  Fn::Sub: 'A new change set was created for the ${Project} stack. Do you want to implement the changes?'
-            - Name: Deploy
-              RunOrder: 3
-              ActionTypeId:
-                Category: Deploy
-                Owner: AWS
-                Provider: CloudFormation
-                Version: 1
-              Configuration:
-                ActionMode: CHANGE_SET_EXECUTE
-                Capabilities: CAPABILITY_IAM
-                ChangeSetName:
-                    Fn::Sub: "${Project}-release-changeset"
-                RoleArn:
-                  Fn::GetAtt: [CloudformationRole, Arn]
-                StackName:
-                    Fn::Sub: "${Project}-release"
+                  Ref: Project
 
   Build:
     Type: AWS::CodeBuild::Project
     Properties:
       Name:
-        Fn::Sub: "${Project}"
-      TimeoutInMinutes: 10
+        Ref: Project
+      TimeoutInMinutes: 5
       ServiceRole:
         Fn::GetAtt: [BuildRole, Arn]
       Source:
@@ -250,6 +174,12 @@ Resources:
               Ref: AWS::AccountId
       Artifacts:
         Type: CODEPIPELINE
+
+  BuildLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/codebuild/${Build}"
+      RetentionInDays: 1
 
   CloudformationRole:
     Type: AWS::IAM::Role
@@ -319,18 +249,13 @@ Resources:
                   - 'cloudformation:SetStackPolicy'
                 Effect: Allow
                 Resource:
-                  - Fn::Sub: "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:*/${Project}-*/*"
+                  - Fn::Sub: "arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:*/${Project}*/*"
                   - '*'
               - Action:
                   - 'iam:PassRole'
                 Effect: Allow
                 Resource:
                   - '*'
-              - Action:
-                  - 'sns:Publish'
-                Effect: Allow
-                Resource:
-                  - Ref: PipelineSNSTopic
 
   BuildRole:
     Type: AWS::IAM::Role

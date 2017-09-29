@@ -67,9 +67,9 @@ paths:
             $ref: "#/definitions/Error"
       x-amazon-apigateway-integration:
         type: aws_proxy
-        credentials: "arn:aws:iam::{{ AccountId }}:role/${stageVariables.ExecutionRoleName}"
+        credentials: "arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/${stageVariables.ExecutionRoleName}"
         httpMethod: POST
-        uri: "arn:aws:apigateway:{{ Region }}:lambda:path//2015-03-31/functions/arn:aws:lambda:{{ Region }}:{{ AccountId }}:function:${stageVariables.ProxyFunction}/invocations"
+        uri: "arn:aws:apigateway:{{ AWS_REGION }}:lambda:path//2015-03-31/functions/arn:aws:lambda:{{ AWS_REGION }}:{{ AWS_ACCOUNT_ID }}:function:${stageVariables.ProxyFunction}/invocations"
         responses:
           default:
             statusCode: "200"

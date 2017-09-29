@@ -6,7 +6,7 @@ Description: Isomorphic React Application Proxy
 
 Parameters:
 
-  RevisionId:
+  Version:
     Type: String
 
 Resources:
@@ -19,13 +19,19 @@ Resources:
       CodeUri: ./out
       Timeout: 10
 
+  ProxyLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${Proxy}"
+      RetentionInDays: 1
+
   ProxyGateway:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Ref: RevisionId
+        Ref: Version
       StageName:
-        Ref: RevisionId
+        Ref: Version
       DefinitionUri: ./artifacts/api.yml
       Variables:
         ProxyFunction:
