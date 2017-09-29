@@ -129,7 +129,6 @@ Resources:
                 ChangeSetName:
                     Fn::Sub: "${Project}-test-system-changeset"
                 TemplatePath: BuildOutput::template.yml
-                TemplateConfiguration: BuildOutput::test.json
             - Name: Deploy
               RunOrder: 2
               ActionTypeId:
@@ -192,7 +191,6 @@ Resources:
                 ChangeSetName:
                     Fn::Sub: "${Project}-release-changeset"
                 TemplatePath: BuildOutput::template.yml
-                TemplateConfiguration: BuildOutput::release.json
             - Name: ApproveChangeSet
               RunOrder: 2
               ActionTypeId:

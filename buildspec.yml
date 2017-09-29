@@ -1,7 +1,7 @@
 version: 0.1
 
 phases:
-  pre_build:
+  install:
     commands:
       - echo "Updating AWS CLI..."
       - pip install --upgrade awscli
@@ -12,6 +12,8 @@ phases:
       - echo "Installing Project Dependencies..."
       - npm install
 
+  pre_build:
+    commands:
       - echo "Creating artifacts directory"
       - mkdir artifacts
 
@@ -31,18 +33,10 @@ phases:
       - npm run build
 
       - echo "Compiling API template..."
-      - mustache aws.json templates/api.yml > artifacts/api.yml
+      - mustache aws.json api.yml > artifacts/api.yml
 
       - echo "Compiling Cloudformation (Bucket $S3_BUCKET)..."
-      - "aws cloudformation package --template-file sam.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file artifacts/$TEMPLATE_FILE_NAME"
-
-      - echo "Moving Configuration files..."
-      - "cp .config/* artifacts/"
-
-  post_build:
-    commands:
-      - echo "Listing artifacts..."
-      - "ls -lR artifacts/"
+      - "aws cloudformation package --template-file service.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file artifacts/$TEMPLATE_FILE_NAME"
 
 artifacts:
   type: zip
