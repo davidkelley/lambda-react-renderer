@@ -119,6 +119,7 @@ Resources:
                 Version: 1
               InputArtifacts:
                 - Name: BuildOutput
+                - Name: SourceOutput
               Configuration:
                 ActionMode: CHANGE_SET_REPLACE
                 Capabilities: CAPABILITY_IAM
@@ -129,6 +130,10 @@ Resources:
                 ChangeSetName:
                     Fn::Sub: "${Project}-test-system-changeset"
                 TemplatePath: BuildOutput::template.yml
+                ParameterOverrides: !Sub |
+                  {
+                    "RevisionId": { "Fn::GetArtifactAtt" : [ "SourceOutput", "revision" ] }
+                  }
             - Name: Deploy
               RunOrder: 2
               ActionTypeId:

@@ -1,9 +1,16 @@
 swagger: "2.0"
-info:
-  title: app
-  version: 0.0.1
 schemes:
   - https
+x-amazon-apigateway-request-validators:
+  all:
+    validateRequestBody: true
+    validateRequestParameters: true
+  body-only:
+    validateRequestBody: true
+    validateRequestParameters: false
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
 definitions:
   Empty:
     type: object

@@ -6,9 +6,9 @@ Description: Isomorphic React Application Proxy
 
 Parameters:
 
-  Stage:
+  RevisionId:
     Type: String
-    Default: Development
+    Default: development
 
 Resources:
 
@@ -23,8 +23,10 @@ Resources:
   ProxyGateway:
     Type: AWS::Serverless::Api
     Properties:
+      Name:
+        Ref: RevisionId
       StageName:
-        Ref: Stage
+        Ref: RevisionId
       DefinitionUri: ./artifacts/api.yml
       Variables:
         ProxyFunction:
