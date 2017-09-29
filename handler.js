@@ -1,8 +1,22 @@
 'use strict';
-console.log('--1--');
+const spawn = require('cross-spawn');
 
 module.exports.render = (event, context, callback) => {
-  console.log('--2--');
+  console.log('--1--');
+
+  spawn(
+    'node',
+    [
+      '-v',
+    ],
+
+      // OSX will throw error if shell is not set
+      shell: process.platform !== 'win32',
+      stdio: 'inherit',
+    },
+  );
+
+  console.log('--3--');
   const response = {
     statusCode: 200,
     headers: {
