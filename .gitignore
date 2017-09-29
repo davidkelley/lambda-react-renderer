@@ -1,9 +1,7 @@
 node_modules
-.serverless
 npm-debug.log
 .env
 .idea
-client_secret.json
 .DS_Store
 jest
 coverage

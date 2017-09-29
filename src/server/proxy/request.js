@@ -1,3 +1,5 @@
+import Client from '../../client';
+
 export default class {
   constructor(event = {}) {
     this.event = event;
@@ -15,30 +17,23 @@ export default class {
     return `${path}?${query}`;
   }
 
-  get body() {
-    return `
-      <html>
-        <body>
-          <h1>Rendered: ${this.path}</h1>
-        </body>
-      </html>
-    `;
+  get client() {
+    return new Client(this.path);
   }
 
-  send() {
-    const { body } = this;
+  async send() {
+    const { client } = this;
+    const { statusCode, body } = await client.render();
     return new Promise((resolve, reject) => {
       try {
         resolve({
           body,
-          statusCode: 200,
+          statusCode,
           headers: {
             'Content-Type': 'text/html',
           },
         });
       } catch (err) {
-        console.error(`"${err.toString()}"\n${JSON.stringify(this.event)}`);
-        console.trace(err);
         reject(err);
       }
     });
