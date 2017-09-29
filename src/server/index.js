@@ -95,6 +95,7 @@ export default new class {
               body: html,
             };
 
+            console.log('Sending the following response back:\n', response);
             resolve(() => callback(null, response));
           } else {
             // Generated html is written to html file in build folder
