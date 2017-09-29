@@ -1,7 +1,13 @@
 # Generated Files
-build/
-dist/
+build
+dist
 
 # Node
-node_modules/
+node_modules
 npm-debug.log
+
+# package directories
+jspm_packages
+
+# Serverless directories
+.serverless
