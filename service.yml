@@ -8,7 +8,6 @@ Parameters:
 
   RevisionId:
     Type: String
-    Default: development
 
 Resources:
 
