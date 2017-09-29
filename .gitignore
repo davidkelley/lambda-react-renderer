@@ -1,10 +1,7 @@
-node_modules
+# Generated Files
+build/
+dist/
+
+# Node
+node_modules/
 npm-debug.log
-.env
-.idea
-.DS_Store
-jest
-coverage
-.webpack
-out/
-cloudformation.yml

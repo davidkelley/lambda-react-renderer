@@ -1,56 +1,22 @@
 {
-  "name": "lambda-react-renderer",
-  "version": "0.1.0",
-  "private": true,
-  "main": "handler.js",
-  "engines": {
-    "node": ">=4.3"
+  "name": "dev-toolkit-starter",
+  "version": "1.0.0",
+  "description": "universal app",
+  "scripts": {
+    "start": "npm run build && npm run serve",
+    "dev": "NODE_ENV=development dev-toolkit watch",
+    "build": "NODE_ENV=production dev-toolkit build",
+    "serve": "NODE_ENV=production SERVER_PORT=8080 dev-toolkit serve"
   },
+  "author": "",
   "dependencies": {
-    "aws-sdk": "^2.54.0",
-    "babel-runtime": "6.11.6"
+    "express": "^4.15.5",
+    "express-handlebars": "^3.0.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   },
   "devDependencies": {
-    "aws-sdk": "^2.6.7",
-    "aws-sdk-mock": "~1.6.1",
-    "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.0.0",
-    "babel-polyfill": "^6.23.0",
-    "babel-preset-env": "^1.4.0",
-    "eslint": "^3.1.1",
-    "eslint-config-airbnb": "^9.0.1",
-    "eslint-plugin-import": "^1.11.1",
-    "eslint-plugin-jsx-a11y": "^2.0.1",
-    "eslint-plugin-react": "^5.2.2",
-    "faker": "~3.1.0",
-    "ignore-loader": "^0.1.2",
-    "jest": "~18.1",
-    "json-loader": "^0.5.4",
-    "path-to-regexp": "^1.5.3",
-    "serverless-jest-plugin": "^0.1.3",
-    "sinon": "~1.17",
-    "webpack": "^2.4.1"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "6.1"
-          }
-        }
-      ]
-    ]
-  },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": "airbnb"
-  },
-  "scripts": {
-    "build": "webpack --progress --colors",
-    "lint": "eslint events src pages test handler.js webpack.config.js",
-    "test": "NODE_ENV=test jest __tests__/.+/*.test.js --coverage --notify",
-    "test:watch": "npm run test -- --reporter min --watch"
+    "babel-preset-dev-toolkit": "0.0.0-beta-5",
+    "dev-toolkit": "6.0.0-beta-19"
   }
 }
