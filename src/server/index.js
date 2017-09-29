@@ -82,12 +82,28 @@ export default new class {
           { assets, renderedHtml: renderToString(<RootComponent />) }
         )
         .then((html) => {
-          // Generated html is written to html file in build folder
-          fs.writeFile(
-            path.join(buildFolder, 'index.html'),
-            html,
-            error => (error ? reject(error) : resolve()),
-          );
+          if (global.serverlessSettings) {
+            console.log('Html genertated, finishing up...');
+            const { event, context, callback } = global.serverlessSettings;
+
+            const response = {
+              statusCode: 200,
+              headers: {
+                'Content-Type': 'text/html',
+                'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+              },
+              body: html,
+            };
+
+            resolve(() => callback(null, response));
+          } else {
+            // Generated html is written to html file in build folder
+            fs.writeFile(
+              path.join(buildFolder, 'index.html'),
+              html,
+              error => (error ? reject(error) : resolve()),
+            );
+          }
         });
     });
   }

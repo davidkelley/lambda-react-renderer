@@ -1,33 +1,24 @@
 'use strict';
-const spawn = require('cross-spawn');
+const devToolkit = require('dev-toolkit').default;
 
 module.exports.render = (event, context, callback) => {
-  console.log('--1--');
-
-  spawn(
-    'node',
-    [
-      '-v',
-    ],
-
-      // OSX will throw error if shell is not set
-      shell: process.platform !== 'win32',
-      stdio: 'inherit',
-    },
-  );
-
-  console.log('--3--');
-  const response = {
-    statusCode: 200,
-    headers: {
-      'Content-Type': 'text/html',
-      'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-    },
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
+  console.log('Pre-rendering using `dev-toolkit` & `serverless`');
+  global.serverlessSettings = {
+    event: event,
+    context: context,
+    callback: callback,
   };
+
+  devToolkit({
+    // The command that would normally be run via the command-line (`dev-toolkit preRender`)
+    command: 'preRender',
+    // Environment variables (which might not be available depending on your setup) can be passed
+    // separately as an `envs`-object, they will be transformed into environment variables on the fly.
+    envs: {
+      NODE_ENV: 'production',
+      MY_CUSTOM_ENV: 'foo-from-handler',
+    },
+  });
 };
 
 // Event Gateway  Event API  listening on: http://localhost:4000
