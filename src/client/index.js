@@ -14,7 +14,7 @@ export default class Client {
   }
 
   render() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const { body } = this;
       resolve({ statusCode: 200, body });
     });
