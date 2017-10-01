@@ -34,14 +34,14 @@ definitions:
           This object contains the raw message sent from the
           underlying integration
 paths:
-  /{proxy+}:
+  /{render+}:
     x-amazon-apigateway-any-method:
       produces:
         - text/html
       consumes:
         - text/html
       parameters:
-        - name: proxy
+        - name: render
           in: path
           required: true
           type: string
@@ -69,7 +69,7 @@ paths:
         type: aws_proxy
         credentials: "arn:aws:iam::{{ AWS_ACCOUNT_ID }}:role/${stageVariables.ExecutionRoleName}"
         httpMethod: POST
-        uri: "arn:aws:apigateway:{{ AWS_REGION }}:lambda:path//2015-03-31/functions/arn:aws:lambda:{{ AWS_REGION }}:{{ AWS_ACCOUNT_ID }}:function:${stageVariables.ProxyFunction}/invocations"
+        uri: "arn:aws:apigateway:{{ AWS_REGION }}:lambda:path//2015-03-31/functions/arn:aws:lambda:{{ AWS_REGION }}:{{ AWS_ACCOUNT_ID }}:function:${stageVariables.RenderFunction}/invocations"
         responses:
           default:
             statusCode: "200"

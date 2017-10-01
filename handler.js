@@ -1,3 +1,3 @@
-import Proxy from './src/server/proxy';
+import Render from './src/server/render';
 
-export { Proxy };
+export { Render };

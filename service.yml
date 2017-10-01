@@ -2,44 +2,44 @@ AWSTemplateFormatVersion: '2010-09-09'
 
 Transform: AWS::Serverless-2016-10-31
 
-Description: Isomorphic React Application Proxy
+Description: Isomorphic React Application
 
 Parameters:
 
-  Version:
+  RevisionId:
     Type: String
 
 Resources:
 
-  Proxy:
+  Render:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.Proxy
+      Handler: index.Render
       Runtime: nodejs6.10
       CodeUri: ./out
       Timeout: 10
 
-  ProxyLogGroup:
+  RenderLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub "/aws/lambda/${Proxy}"
+      LogGroupName: !Sub "/aws/lambda/${Render}"
       RetentionInDays: 1
 
-  ProxyGateway:
+  RenderGateway:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Ref: Version
+        Ref: RevisionId
       StageName:
-        Ref: Version
+        Ref: RevisionId
       DefinitionUri: ./artifacts/api.yml
       Variables:
-        ProxyFunction:
-          Ref: Proxy
+        RenderFunction:
+          Ref: Render
         ExecutionRoleName:
-          Ref: ProxyGatewayExecutionRole
+          Ref: RenderGatewayExecutionRole
 
-  ProxyGatewayExecutionRole:
+  RenderGatewayExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       Path: "/"
@@ -51,7 +51,7 @@ Resources:
               Service: apigateway.amazonaws.com
             Action: sts:AssumeRole
 
-  ProxyGatewayExecutionPolicy:
+  RenderGatewayExecutionPolicy:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: APIPermissions
@@ -62,6 +62,6 @@ Resources:
             Action:
               - lambda:*
             Resource:
-              - Fn::GetAtt: [Proxy, Arn]
+              - Fn::GetAtt: [Render, Arn]
       Roles:
-        - Ref: ProxyGatewayExecutionRole
+        - Ref: RenderGatewayExecutionRole

@@ -130,7 +130,7 @@ Resources:
                 TemplatePath: BuildOutput::template.yml
                 ParameterOverrides: |
                   {
-                    "Version": { "Fn::GetParam": ["BuildOutput", "build.json", "CODEBUILD_RESOLVED_SOURCE_VERSION"] }
+                    "RevisionId": { "Fn::GetParam": ["BuildOutput", "build.json", "CODEBUILD_RESOLVED_SOURCE_VERSION"] }
                   }
             - Name: Deploy
               RunOrder: 2
@@ -203,6 +203,7 @@ Resources:
                   - 'iam:*'
                   - 'lambda:*'
                   - 'dynamodb:*'
+                  - 'logs:*'
                   - 'sns:*'
                   - 'events:*'
                   - 'cognito-idp:*'

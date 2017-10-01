@@ -1,6 +1,6 @@
 {
-  "name": "proxy",
+  "name": "render",
   "version": "0.0.0",
   "private": true,
-  "main": "./proxy.js"
+  "main": "./render.js"
 }
