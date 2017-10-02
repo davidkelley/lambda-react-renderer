@@ -29,7 +29,7 @@ phases:
       # - npm run test
 
       - echo "Packaging..."
-      - npm run build
+      - npm run build:server
 
       - echo "Compiling API template..."
       - mustache artifacts/build.json api.yml > artifacts/api.yml

@@ -68,7 +68,8 @@
     "extends": "airbnb"
   },
   "scripts": {
-    "build": "webpack --progress --colors",
+    "build:server": "webpack --config webpack.server.config.js --progress --colors",
+    "build:client": "webpack --config webpack.client.config.js --progress --colors",
     "lint": "eslint events src pages test handler.js webpack.config.js",
     "test": "NODE_ENV=test jest __tests__/.+/*.test.js --coverage --notify",
     "test:watch": "npm run test -- --reporter min --watch"

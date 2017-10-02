@@ -9,10 +9,8 @@ import template from './views/template.hbs';
 
 export default class Client {
   constructor(path) {
-    this.path = '/aboadadadadaut';
-    // this.path = path;
+    this.path = path;
     this.assets = {};
-    // this.context = createServerRenderContext();
     this.context = {};
   }
 

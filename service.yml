@@ -16,7 +16,7 @@ Resources:
     Properties:
       Handler: index.Render
       Runtime: nodejs6.10
-      CodeUri: ./out
+      CodeUri: ./out/server
       Timeout: 10
 
   RenderLogGroup:
