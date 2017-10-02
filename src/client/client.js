@@ -1,10 +1,10 @@
 import React from 'react';
-import App from './views/App';
+import Root from './views/Root';
 
 const DISPLAY_NAME = 'RootComponent';
 
 const component = () => (
-  <App />
+  <Root />
 );
 
 component.displayName = DISPLAY_NAME;
