@@ -139,6 +139,8 @@ Resources:
                 Owner: AWS
                 Provider: CloudFormation
                 Version: 1
+              OutputArtifacts:
+                - Name: DeployOutput
               Configuration:
                 ActionMode: CHANGE_SET_EXECUTE
                 Capabilities: CAPABILITY_IAM
@@ -148,6 +150,34 @@ Resources:
                   Fn::GetAtt: [CloudformationRole, Arn]
                 StackName:
                   Ref: Project
+                OutputFileName: Outputs.json
+            - Name: Assets
+              RunOrder: 3
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              InputArtifacts:
+                - Name: BuildOutput
+                - Name: DeployOutput
+              Configuration:
+                ActionMode: REPLACE_ON_FAILURE
+                RoleArn:
+                  Fn::GetAtt: [CloudformationRole, Arn]
+                StackName: !Sub "${Project}-assets"
+                ChangeSetName: !Sub "${Project}-assets"
+                TemplatePath: BuildOutput::assets.yml
+                ParameterOverrides: !Sub |
+                  {
+                    "BucketName" : { "Fn::GetArtifactAtt" : ["BuildOutput", "BucketName"]},
+                    "ObjectKey" : { "Fn::GetArtifactAtt" : ["BuildOutput", "ObjectKey"]},
+                    "AssetBucket" : { "Fn::GetParam" : ["DeployOutput", "Outputs.json", "AssetBucket"]},
+                    "CloudformationRole": "${CloudformationRole.Arn}",
+                    "PipelineRole": "${PipelineRole.Arn}",
+                    "PipelineArtifactStore": "${PipelineArtifactStore}",
+                    "BuildRole": "${BuildRole.Arn}"
+                  }
 
   Build:
     Type: AWS::CodeBuild::Project

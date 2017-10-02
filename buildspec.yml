@@ -45,3 +45,5 @@ artifacts:
     - out/client/**/*
     - template.yml
     - build.json
+    - assets.yml
+    - assetspec.yml

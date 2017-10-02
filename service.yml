@@ -11,6 +11,9 @@ Parameters:
 
 Resources:
 
+  AssetBucket:
+    Type: AWS::S3::Bucket
+
   Render:
     Type: AWS::Serverless::Function
     Properties:
@@ -65,3 +68,10 @@ Resources:
               - Fn::GetAtt: [Render, Arn]
       Roles:
         - Ref: RenderGatewayExecutionRole
+
+Outputs:
+
+  AssetBucket:
+    Description: Bucket name for application static assets
+    Value:
+      Ref: AssetBucket

@@ -1,0 +1,129 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Uploads static application assets, self-deleting"
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Source bucket of zipped assets
+
+  ObjectKey:
+    Type: String
+    Description: Object key for zipped assets
+
+  AssetBucket:
+    Type: String
+    Description: Destination bucket for all static assets
+
+  CloudformationRole:
+    Type: String
+
+  PipelineRole:
+    Type: String
+
+  PipelineArtifactStore:
+    Type: String
+
+  BuildRole:
+    Type: String
+
+Resources:
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name:
+        Ref: Project
+      ArtifactStore:
+        Location:
+          Ref: PipelineArtifactStore
+        Type: S3
+      RoleArn:
+        Ref: PipelineRole
+      Stages:
+        - Name: Build
+          Actions:
+            - Name: Build
+              RunOrder: 1
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: S3
+              OutputArtifacts:
+                - Name: BuildOutput
+              Configuration:
+                S3Bucket: !Ref BucketName
+                S3ObjectKey: !Ref ObjectKey
+        - Name: Upload
+          Actions:
+            - Name: Upload
+              RunOrder: 2
+              InputArtifacts:
+                - Name: BuildOutput
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              Configuration:
+                ProjectName:
+                  Ref: Upload
+        - Name: Delete
+          Actions:
+            - Name: Delete
+              RunOrder: 1
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Provider: CloudFormation
+                Version: 1
+              Configuration:
+                ActionMode: DELETE_ONLY
+                RoleArn:
+                  Ref: CloudformationRole
+                StackName:
+                  Ref: AWS::StackName
+
+  Upload:
+    DependsOn:
+      - UploadPolicy
+    Type: AWS::CodeBuild::Project
+    Properties:
+      TimeoutInMinutes: 5
+      ServiceRole:
+        Ref: BuildRole
+      Source:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/nodejs:6.3.1
+        EnvironmentVariables:
+          - Name: ASSET_BUCKET
+            Value:
+              Ref: AssetBucket
+      Artifacts:
+        Type: CODEPIPELINE
+        BuildSpec: assetspec.yml
+
+  UploadPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: UploadToAssetBucketPolicy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+            Resource:
+              - !Sub "arn:${AWS::Partition}:s3:::${AssetBucket}/*"
+      Roles:
+        - !Ref BuildRole
+
+  UploadLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/codebuild/${Upload}"
+      RetentionInDays: 1
