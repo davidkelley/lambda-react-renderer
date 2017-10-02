@@ -163,6 +163,7 @@ Resources:
                 - Name: DeployOutput
               Configuration:
                 ActionMode: REPLACE_ON_FAILURE
+                Capabilities: CAPABILITY_IAM
                 RoleArn:
                   Fn::GetAtt: [CloudformationRole, Arn]
                 StackName: !Sub "${Project}-assets"
@@ -170,13 +171,14 @@ Resources:
                 TemplatePath: BuildOutput::assets.yml
                 ParameterOverrides: !Sub |
                   {
-                    "BucketName" : { "Fn::GetArtifactAtt" : ["BuildOutput", "BucketName"]},
-                    "ObjectKey" : { "Fn::GetArtifactAtt" : ["BuildOutput", "ObjectKey"]},
-                    "AssetBucket" : { "Fn::GetParam" : ["DeployOutput", "Outputs.json", "AssetBucket"]},
-                    "CloudformationRole": "${CloudformationRole.Arn}",
-                    "PipelineRole": "${PipelineRole.Arn}",
+                    "BucketName": { "Fn::GetArtifactAtt": ["BuildOutput", "BucketName"]},
+                    "ObjectKey": { "Fn::GetArtifactAtt": ["BuildOutput", "ObjectKey"]},
+                    "AssetBucket": { "Fn::GetParam": ["DeployOutput", "Outputs.json", "AssetBucket"]},
+                    "CloudformationRoleArn": "${CloudformationRole.Arn}",
+                    "PipelineRoleArn": "${PipelineRole.Arn}",
                     "PipelineArtifactStore": "${PipelineArtifactStore}",
-                    "BuildRole": "${BuildRole.Arn}"
+                    "BuildRoleArn": "${BuildRole.Arn}",
+                    "BuildRole": "${BuildRole}"
                   }
 
   Build:

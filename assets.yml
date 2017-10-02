@@ -15,13 +15,16 @@ Parameters:
     Type: String
     Description: Destination bucket for all static assets
 
-  CloudformationRole:
+  CloudformationRoleArn:
     Type: String
 
-  PipelineRole:
+  PipelineRoleArn:
     Type: String
 
   PipelineArtifactStore:
+    Type: String
+
+  BuildRoleArn:
     Type: String
 
   BuildRole:
