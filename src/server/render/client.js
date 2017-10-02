@@ -1,5 +1,5 @@
-import path from 'path';
-import fs from 'fs';
+// import path from 'path';
+// import fs from 'fs';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
@@ -14,7 +14,7 @@ export default class Client {
   }
 
   get renderedHtml() {
-    return renderToString(<RootComponent/>);
+    return renderToString(<RootComponent />);
   }
 
   get body() {
