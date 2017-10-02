@@ -18,6 +18,9 @@ Parameters:
   CloudformationRoleArn:
     Type: String
 
+  PipelineRole:
+    Type: String
+
   PipelineRoleArn:
     Type: String
 
@@ -85,6 +88,21 @@ Resources:
                   Ref: CloudformationRoleArn
                 StackName:
                   Ref: AWS::StackName
+
+  PipelinePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: StartBuildPolicy
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'codebuild:*'
+            Effect: Allow
+            Resource:
+              - !Sub "arn:aws:codebuild:${AWS::Region}:${AWS::AccountId}:project/${Upload}"
+      Roles:
+        - !Ref PipelineRole
 
   Upload:
     DependsOn:

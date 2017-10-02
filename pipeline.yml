@@ -151,6 +151,22 @@ Resources:
                 StackName:
                   Ref: Project
                 OutputFileName: Outputs.json
+            # - Name: Assets
+            #   RunOrder: 3
+            #   ActionTypeId:
+            #     Category: Invoke
+            #     Owner: AWS
+            #     Provider: Lambda
+            #     Version: 1
+            #   InputArtifacts:
+            #     - Name: BuildOutput
+            #     - Name: DeployOutput
+            #   Configuration:
+            #     FunctionName: #FunctionName
+            #     UserParameters: |
+            #       {
+            #
+            #       }
             - Name: Assets
               RunOrder: 3
               ActionTypeId:
@@ -176,6 +192,7 @@ Resources:
                     "AssetBucket": { "Fn::GetParam": ["DeployOutput", "Outputs.json", "AssetBucket"]},
                     "CloudformationRoleArn": "${CloudformationRole.Arn}",
                     "PipelineRoleArn": "${PipelineRole.Arn}",
+                    "PipelineRole": "${PipelineRole}",
                     "PipelineArtifactStore": "${PipelineArtifactStore}",
                     "BuildRoleArn": "${BuildRole.Arn}",
                     "BuildRole": "${BuildRole}"
@@ -229,6 +246,8 @@ Resources:
             Statement:
               - Action:
                   - 'cloudformation:*'
+                  - 'codebuild:*'
+                  - 'codepipeline:*'
                   - 's3:*'
                   - 'iam:*'
                   - 'lambda:*'
