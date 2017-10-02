@@ -167,8 +167,6 @@ Resources:
           - Name: S3_BUCKET
             Value:
               Ref: PipelineArtifactStore
-          - Name: TEMPLATE_FILE_NAME
-            Value: template.yml
           - Name: AWS_ACCOUNT_ID
             Value:
               Ref: AWS::AccountId

@@ -32,7 +32,7 @@ Resources:
         Ref: RevisionId
       StageName:
         Ref: RevisionId
-      DefinitionUri: ./artifacts/api.yml
+      DefinitionUri: ./api.yml
       Variables:
         RenderFunction:
           Ref: Render

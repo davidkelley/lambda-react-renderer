@@ -14,11 +14,8 @@ phases:
 
   pre_build:
     commands:
-      - echo "Creating artifacts directory"
-      - mkdir artifacts
-
       - echo "Creating AWS Config file"
-      - node -e 'console.log(JSON.stringify(process.env))' > artifacts/build.json
+      - node -e 'console.log(JSON.stringify(process.env))' > build.json
 
   build:
     commands:
@@ -28,17 +25,23 @@ phases:
       # - echo "Running tests..."
       # - npm run test
 
-      - echo "Packaging..."
+      - echo "Packaging Server..."
       - npm run build:server
 
+      - echo "Packaging Client..."
+      - npm run build:client
+
       - echo "Compiling API template..."
-      - mustache artifacts/build.json api.yml > artifacts/api.yml
+      - mustache build.json api.yml > api.yml
 
       - echo "Compiling Cloudformation (Bucket $S3_BUCKET)..."
-      - "aws cloudformation package --template-file service.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file artifacts/$TEMPLATE_FILE_NAME"
+      - "aws cloudformation package --template-file service.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file template.yml"
 
 artifacts:
   type: zip
-  discard-paths: yes
+  discard-paths: no
   files:
-    - artifacts/**/*
+    # - artifacts/**/*
+    - out/client/**/*
+    - template.yml
+    - build.json

@@ -7,8 +7,8 @@ module.exports = {
   ],
   output: {
     path: `${__dirname}/out/client`,
-    filename: 'app.[hash].bundle.js',
-    chunkFilename: '[id].[hash].bundle.js',
+    filename: 'app.bundle.js',
+    // chunkFilename: '[id].[hash].bundle.js',
     publicPath: '/assets/[hash]'
   },
   plugins: [
