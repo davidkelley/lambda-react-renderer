@@ -75,3 +75,7 @@ Outputs:
     Description: Bucket name for application static assets
     Value:
       Ref: AssetBucket
+
+  URL:
+    Description: URL for the service
+    Value: !Sub "https://${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${RevisionId}"

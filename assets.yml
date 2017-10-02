@@ -32,8 +32,6 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      Name:
-        Ref: Project
       ArtifactStore:
         Location:
           Ref: PipelineArtifactStore
