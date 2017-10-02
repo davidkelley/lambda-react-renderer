@@ -1,12 +1,15 @@
-import React from 'react';
-import Root from './views/Root';
-
-const DISPLAY_NAME = 'RootComponent';
-
-const component = () => (
-  <Root />
-);
-
-component.displayName = DISPLAY_NAME;
-
-export default component;
+// import React from 'react';
+// import App from './views/App';
+// import { BrowserRouter } from 'react-router';
+//
+// const DISPLAY_NAME = 'RootComponent';
+//
+// const component = () => (
+//   <BrowserRouter>
+//     <App />
+//   </BrowserRouter>
+// );
+//
+// component.displayName = DISPLAY_NAME;
+//
+// export default component;
