@@ -35,7 +35,7 @@ Resources:
         Ref: RevisionId
       StageName:
         Ref: RevisionId
-      DefinitionUri: ./api.yml
+      DefinitionUri: ./out/api.yml
       Variables:
         RenderFunction:
           Ref: Render

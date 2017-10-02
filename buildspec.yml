@@ -32,7 +32,7 @@ phases:
       - npm run build:client
 
       - echo "Compiling API template..."
-      - mustache build.json api.yml > api.yml
+      - mustache build.json api.yml > out/api.yml
 
       - echo "Compiling Cloudformation (Bucket $S3_BUCKET)..."
       - "aws cloudformation package --template-file service.yml --s3-prefix build --s3-bucket $S3_BUCKET --output-template-file template.yml"
@@ -42,7 +42,7 @@ artifacts:
   discard-paths: no
   files:
     # - artifacts/**/*
-    - out/client/**/*
+    - out/**/*
     - template.yml
     - build.json
     - assets.yml
