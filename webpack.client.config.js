@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+
 module.exports = {
   devtool: 'source-map',
   entry: [
@@ -18,11 +20,7 @@ module.exports = {
       //   'NODE_ENV': JSON.stringify('production')
       // }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
+    new UglifyJSPlugin()
   ],
   module: {
     loaders: [
