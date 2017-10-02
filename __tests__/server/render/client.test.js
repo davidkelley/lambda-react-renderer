@@ -9,7 +9,7 @@ describe('Client', () => {
     const client = new Client(path);
 
     it('renders', () => {
-      console.log(client.body);
+      // console.log(client.body);
       expect(true).toBe(true);
     });
   });
