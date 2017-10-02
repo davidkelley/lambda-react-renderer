@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { ServerRouter, createServerRenderContext } from 'react-router'
+import { StaticRouter as Router } from 'react-router';
+// import createServerRenderContext from 'react-router/createServerRenderContext';
 
 import App from '../../client/App';
 
@@ -8,19 +9,20 @@ import template from './views/template.hbs';
 
 export default class Client {
   constructor(path) {
-    this.path = path;
+    this.path = '/aboadadadadaut';
+    // this.path = path;
     this.assets = {};
-    this.context = createServerRenderContext();
+    // this.context = createServerRenderContext();
+    this.context = {};
   }
 
   get renderedHtml() {
     const { path, context } = this;
     return renderToString(
-      <ServerRouter location={path} context={context}>
+      <Router location={path} context={context}>
         <App/>
-      </ServerRouter>
+      </Router>
     )
-    // return rend  erToString(<RootComponent />);
   }
 
   get body() {
@@ -30,19 +32,19 @@ export default class Client {
 
   render() {
     return new Promise((resolve) => {
-      const { body, context } = this;
-      const result = context.getResult();
-      // if (context.redirect) {
-      //   resolve({
-      //     statusCode: 301,
-      //     headers: {
-      //       Location: result.redirect.pathname,
-      //     },
-      //   })
-      // } else {
-      //
-      // }
-      resolve({ statusCode: 200, body });
+      const { context, body } = this;
+      if (context.url) {
+        resolve({
+          statusCode: 301,
+          headers: {
+            Location: context.url,
+          },
+        });
+      } else {
+        const { statusCode } = context;
+        const code = statusCode || 200;
+        resolve({ statusCode: code, body });
+      }
     });
   }
 }

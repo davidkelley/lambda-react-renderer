@@ -1,10 +1,8 @@
 import React from 'react';
-import Match from 'react-router/Match';
-import Miss from 'react-router/Miss';
-import Link from 'react-router/Link';
+import { Switch, Link, Route } from 'react-router-dom';
 
-import Home from './Home';
-import About from './About';
+import Home from './views/Home';
+import About from './views/About';
 
 // Use this as the entry-point for your app.
 export default () => (
@@ -16,7 +14,10 @@ export default () => (
 
     <hr/>
 
-    <Match pattern="/Home" component={Home} />
-    <Match pattern="/About" component={About} />
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route path="/home" component={Home} />
+      <Route path="/about" component={About} />
+    </Switch>
   </div>
 );

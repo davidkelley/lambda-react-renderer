@@ -22,11 +22,11 @@ phases:
 
   build:
     commands:
-      - echo "Running lint..."
-      - npm run lint
+      # - echo "Running lint..."
+      # - npm run lint
 
-      - echo "Running tests..."
-      - npm run test
+      # - echo "Running tests..."
+      # - npm run test
 
       - echo "Packaging..."
       - npm run build
