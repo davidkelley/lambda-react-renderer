@@ -40,7 +40,7 @@ Resources:
           Ref: PipelineArtifactStore
         Type: S3
       RoleArn:
-        Ref: PipelineRole
+        Ref: PipelineRoleArn
       Stages:
         - Name: Build
           Actions:
@@ -82,7 +82,7 @@ Resources:
               Configuration:
                 ActionMode: DELETE_ONLY
                 RoleArn:
-                  Ref: CloudformationRole
+                  Ref: CloudformationRoleArn
                 StackName:
                   Ref: AWS::StackName
 
@@ -93,7 +93,7 @@ Resources:
     Properties:
       TimeoutInMinutes: 5
       ServiceRole:
-        Ref: BuildRole
+        Ref: BuildRoleArn
       Source:
         Type: CODEPIPELINE
       Environment:
