@@ -151,22 +151,29 @@ Resources:
                 StackName:
                   Ref: Project
                 OutputFileName: Outputs.json
-            # - Name: Assets
-            #   RunOrder: 3
-            #   ActionTypeId:
-            #     Category: Invoke
-            #     Owner: AWS
-            #     Provider: Lambda
-            #     Version: 1
-            #   InputArtifacts:
-            #     - Name: BuildOutput
-            #     - Name: DeployOutput
-            #   Configuration:
-            #     FunctionName: #FunctionName
-            #     UserParameters: |
-            #       {
-            #
-            #       }
+            - Name: Assets
+              RunOrder: 3
+              ActionTypeId:
+                Category: Invoke
+                Owner: AWS
+                Provider: Lambda
+                Version: 1
+              InputArtifacts:
+                - Name: BuildOutput
+                - Name: DeployOutput
+              Configuration:
+                FunctionName: #FunctionName
+                UserParameters: |
+                  {
+                    "Destination": {
+                      "BucketName": { "Fn::GetParam": ["DeployOutput", "Outputs.json", "AssetBucket"]},
+                      "Prefix": "/assets"
+                    },
+                    "Source": {
+                      "Artifact": "BuildOutput",
+                      "Path": "/out/client/"
+                    }
+                  }
             - Name: Assets
               RunOrder: 3
               ActionTypeId:
