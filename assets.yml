@@ -96,6 +96,7 @@ Resources:
         Ref: BuildRoleArn
       Source:
         Type: CODEPIPELINE
+        BuildSpec: assetspec.yml
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
@@ -106,7 +107,6 @@ Resources:
               Ref: AssetBucket
       Artifacts:
         Type: CODEPIPELINE
-        BuildSpec: assetspec.yml
 
   UploadPolicy:
     Type: AWS::IAM::Policy
