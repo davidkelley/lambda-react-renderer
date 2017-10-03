@@ -14,6 +14,47 @@ Resources:
   AssetBucket:
     Type: AWS::S3::Bucket
 
+  AssetBucketPolicy:
+    Type: "AWS::S3::BucketPolicy"
+    Properties:
+      Bucket: !Ref AssetBucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: "Allow"
+            Resource:
+              - !Sub "arn:${AWS::Partition}:::${AssetBucket}/*"
+            Principal: "*"
+
+  AssetCDN:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Aliases:
+          - !Sub "${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${RevisionId}/index"
+        HttpVersion: http2
+        Comment: !Sub "RevisionId: ${RevisionId}"
+        CustomErrorResponses:
+          - ErrorCode: 404
+            ResponseCode: 200
+            ResponsePagePath: 404-not-found.html
+        Origins:
+          - DomainName: !Sub "${AssetBucket}.s3.${AWS::URLSuffix}"
+            Id: Assets
+        DefaultCacheBehaviour:
+          - TargetOriginId: Assets
+            Compress: true
+        CacheBehaviour:
+          - Compress: true
+            PathPattern: assets/*
+            TargetOriginId: Assets
+            AllowedMethods:
+              - GET
+            CachedMethods:
+              - GET
+
   Render:
     Type: AWS::Serverless::Function
     Properties:
