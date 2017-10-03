@@ -251,6 +251,7 @@ Resources:
             Statement:
               - Action:
                   - 'cloudformation:*'
+                  - 'cloudfront:*'
                   - 'codebuild:*'
                   - 'codepipeline:*'
                   - 's3:*'

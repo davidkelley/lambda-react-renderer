@@ -52,10 +52,6 @@ Resources:
         DefaultCacheBehavior:
           Compress: true
           TargetOriginId: Render
-          AllowedMethods:
-            - GET
-          CachedMethods:
-            - GET
           ForwardedValues:
             QueryString: true
           ViewerProtocolPolicy: redirect-to-https
@@ -63,10 +59,6 @@ Resources:
           - Compress: true
             PathPattern: "/assets/*"
             TargetOriginId: Assets
-            AllowedMethods:
-              - GET
-            CachedMethods:
-              - GET
             ForwardedValues:
               QueryString: false
             ViewerProtocolPolicy: redirect-to-https
