@@ -53,6 +53,8 @@ Resources:
               - GET
             CachedMethods:
               - GET
+            ForwardedValues:
+              QueryString: true
         CacheBehaviors:
           - Compress: true
             PathPattern: "/assets/*"
@@ -61,6 +63,8 @@ Resources:
               - GET
             CachedMethods:
               - GET
+            ForwardedValues:
+              QueryString: false
 
   Render:
     Type: AWS::Serverless::Function
