@@ -85,8 +85,7 @@ Resources:
         Ref: AWS::StackName
       StageName:
         Ref: RevisionId
-      DefinitionBody:
-        swagger: "2.0"
+      DefinitionUri: ./out/api.yml
       Variables:
         RenderFunction:
           Ref: Render
