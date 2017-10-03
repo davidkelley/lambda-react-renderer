@@ -32,20 +32,30 @@ Resources:
     Properties:
       DistributionConfig:
         Enabled: true
-        Aliases:
-          - !Sub "${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${RevisionId}/index"
+        # Aliases:
+        #   - !Sub "${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${RevisionId}/index"
         HttpVersion: http2
         Comment: !Sub "RevisionId: ${RevisionId}"
-        CustomErrorResponses:
-          - ErrorCode: 404
-            ResponseCode: 200
-            ResponsePagePath: 404-not-found.html
+        # CustomErrorResponses:
+        #   - ErrorCode: 404
+        #     ResponseCode: 200
+        #     ResponsePagePath: 404-not-found.html
         Origins:
           - DomainName: !Sub "${AssetBucket}.s3.${AWS::URLSuffix}"
             Id: Assets
-        CacheBehaviour:
+          - DomainName: !Sub "https://${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
+            OriginPath: !Sub "/${RevisionId}"
+            Id: Render
+        DefaultCacheBehavior:
           - Compress: true
-            PathPattern: assets/*
+            TargetOriginId: Render
+            AllowedMethods:
+              - GET
+            CachedMethods:
+              - GET
+        CacheBehavior:
+          - Compress: true
+            PathPattern: "/assets/*"
             TargetOriginId: Assets
             AllowedMethods:
               - GET
