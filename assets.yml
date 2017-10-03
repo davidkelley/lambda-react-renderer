@@ -119,7 +119,7 @@ Resources:
             Value:
               Ref: AssetBucket
       Artifacts:
-        Type: NO_ARTIFACTS
+        Type: CODEPIPELINE
 
   UploadPolicy:
     Type: AWS::IAM::Policy
