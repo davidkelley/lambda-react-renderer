@@ -53,7 +53,7 @@ Resources:
               - GET
             CachedMethods:
               - GET
-        CacheBehavior:
+        CacheBehaviors:
           - Compress: true
             PathPattern: "/assets/*"
             TargetOriginId: Assets
