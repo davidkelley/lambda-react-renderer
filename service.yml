@@ -43,9 +43,6 @@ Resources:
         Origins:
           - DomainName: !Sub "${AssetBucket}.s3.${AWS::URLSuffix}"
             Id: Assets
-        DefaultCacheBehaviour:
-          - TargetOriginId: Assets
-            Compress: true
         CacheBehaviour:
           - Compress: true
             PathPattern: assets/*
