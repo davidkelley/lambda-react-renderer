@@ -47,15 +47,15 @@ Resources:
             OriginPath: !Sub "/${RevisionId}"
             Id: Render
         DefaultCacheBehavior:
-          - Compress: true
-            TargetOriginId: Render
-            AllowedMethods:
-              - GET
-            CachedMethods:
-              - GET
-            ForwardedValues:
-              QueryString: true
-            ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          TargetOriginId: Render
+          AllowedMethods:
+            - GET
+          CachedMethods:
+            - GET
+          ForwardedValues:
+            QueryString: true
+          ViewerProtocolPolicy: redirect-to-https
         CacheBehaviors:
           - Compress: true
             PathPattern: "/assets/*"
