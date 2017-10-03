@@ -57,6 +57,8 @@ paths:
               type: "string"
             Content-Type:
               type: "string"
+            Cache-Control:
+              type: "string"
         "400":
           description: A 400 error occurred
           schema:
@@ -77,6 +79,7 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
               method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Cache-Control: "integration.response.header.Cache-Control"
         passthroughBehavior: when_no_match
   /{render+}:
     x-amazon-apigateway-any-method:
@@ -101,6 +104,8 @@ paths:
               type: "string"
             Content-Type:
               type: "string"
+            Cache-Control:
+              type: "string"
         "400":
           description: A 400 error occurred
           schema:
@@ -121,4 +126,5 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'*'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
               method.response.header.Content-Type: "integration.response.header.Content-Type"
+              method.response.header.Cache-Control: "integration.response.header.Cache-Control"
         passthroughBehavior: when_no_match

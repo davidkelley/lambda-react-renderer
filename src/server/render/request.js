@@ -22,20 +22,10 @@ export default class {
   }
 
   async send() {
-    const { client } = this;
-    const { statusCode, body } = await client.render();
-    return new Promise((resolve, reject) => {
-      try {
-        resolve({
-          body,
-          statusCode,
-          headers: {
-            'Content-Type': 'text/html',
-          },
-        });
-      } catch (err) {
-        reject(err);
-      }
-    });
+    try {
+      return await this.client.render();
+    } catch (err) {
+      throw err;
+    }
   }
 }

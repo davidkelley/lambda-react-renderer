@@ -41,7 +41,11 @@ export default class Client {
       } else {
         const { statusCode } = context;
         const code = statusCode || 200;
-        resolve({ statusCode: code, body });
+        const headers = {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'max-age=300, public',
+        };
+        resolve({ statusCode: code, body, headers });
       }
     });
   }
