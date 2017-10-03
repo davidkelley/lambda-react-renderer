@@ -15,23 +15,21 @@ Parameters:
     Type: String
     Description: Destination bucket for all static assets
 
-  CloudformationRoleArn:
+  CloudformationRole:
     Type: String
+    Description: IAM Role enabling management of CloudFormation resources
 
   PipelineRole:
     Type: String
-
-  PipelineRoleArn:
-    Type: String
+    Description: IAM Role enabling execution of CodePipeline builds
 
   PipelineArtifactStore:
     Type: String
-
-  BuildRoleArn:
-    Type: String
+    Description: Destination S3 bucket for Pipeline Artifacts
 
   BuildRole:
     Type: String
+    Description: IAM Role enabling upload
 
 Resources:
 
@@ -42,8 +40,7 @@ Resources:
         Location:
           Ref: PipelineArtifactStore
         Type: S3
-      RoleArn:
-        Ref: PipelineRoleArn
+      RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${PipelineRole}"
       Stages:
         - Name: Build
           Actions:
@@ -84,8 +81,7 @@ Resources:
                 Version: 1
               Configuration:
                 ActionMode: DELETE_ONLY
-                RoleArn:
-                  Ref: CloudformationRoleArn
+                RoleArn: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${CloudformationRole}"
                 StackName:
                   Ref: AWS::StackName
 
@@ -110,8 +106,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       TimeoutInMinutes: 5
-      ServiceRole:
-        Ref: BuildRoleArn
+      ServiceRole: !Sub "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${BuildRole}"
       Source:
         Type: CODEPIPELINE
         BuildSpec: assetspec.yml
@@ -124,7 +119,7 @@ Resources:
             Value:
               Ref: AssetBucket
       Artifacts:
-        Type: CODEPIPELINE
+        Type: NO_ARTIFACTS
 
   UploadPolicy:
     Type: AWS::IAM::Policy
