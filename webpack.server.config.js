@@ -1,6 +1,6 @@
 module.exports = {
   entry: [
-    'babel-polyfill',
+    // 'babel-polyfill',
     './handler.js',
   ],
   target: 'node',

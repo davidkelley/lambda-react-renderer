@@ -52,6 +52,7 @@ Resources:
             Id: Render
         DefaultCacheBehavior:
           Compress: true
+          DefaultTTL: 3600
           TargetOriginId: Render
           ForwardedValues:
             QueryString: true
