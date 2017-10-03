@@ -71,6 +71,19 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: ./out/server
       Timeout: 10
+      Events:
+        AnyRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+            RestApiId: !Ref RenderGateway
+        AnyProxy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref RenderGateway
 
   RenderLogGroup:
     Type: AWS::Logs::LogGroup
@@ -82,42 +95,43 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name:
-        Ref: RevisionId
+        Ref: AWS::StackName
       StageName:
         Ref: RevisionId
-      DefinitionUri: ./out/api.yml
-      Variables:
-        RenderFunction:
-          Ref: Render
-        ExecutionRoleName:
-          Ref: RenderGatewayExecutionRole
+      DefinitionBody:
+        swagger: "2.0"
+      # Variables:
+        # RenderFunction:
+        #   Ref: Render
+        # ExecutionRoleName:
+        #   Ref: RenderGatewayExecutionRole
 
-  RenderGatewayExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      Path: "/"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-          - Effect: "Allow"
-            Principal:
-              Service: apigateway.amazonaws.com
-            Action: sts:AssumeRole
+  # RenderGatewayExecutionRole:
+  #   Type: AWS::IAM::Role
+  #   Properties:
+  #     Path: "/"
+  #     AssumeRolePolicyDocument:
+  #       Version: "2012-10-17"
+  #       Statement:
+  #         - Effect: "Allow"
+  #           Principal:
+  #             Service: apigateway.amazonaws.com
+  #           Action: sts:AssumeRole
 
-  RenderGatewayExecutionPolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyName: APIPermissions
-      PolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          - Effect: Allow
-            Action:
-              - lambda:*
-            Resource:
-              - Fn::GetAtt: [Render, Arn]
-      Roles:
-        - Ref: RenderGatewayExecutionRole
+  # RenderGatewayExecutionPolicy:
+  #   Type: AWS::IAM::Policy
+  #   Properties:
+  #     PolicyName: APIPermissions
+  #     PolicyDocument:
+  #       Version: 2012-10-17
+  #       Statement:
+  #         - Effect: Allow
+  #           Action:
+  #             - lambda:*
+  #           Resource:
+  #             - Fn::GetAtt: [Render, Arn]
+  #     Roles:
+  #       - Ref: RenderGatewayExecutionRole
 
 Outputs:
 
