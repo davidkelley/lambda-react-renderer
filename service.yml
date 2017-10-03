@@ -55,6 +55,7 @@ Resources:
               - GET
             ForwardedValues:
               QueryString: true
+            ViewerProtocolPolicy: redirect-to-https
         CacheBehaviors:
           - Compress: true
             PathPattern: "/assets/*"
@@ -65,6 +66,7 @@ Resources:
               - GET
             ForwardedValues:
               QueryString: false
+            ViewerProtocolPolicy: redirect-to-https
 
   Render:
     Type: AWS::Serverless::Function
