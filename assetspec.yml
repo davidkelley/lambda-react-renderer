@@ -4,4 +4,4 @@ phases:
   build:
     commands:
       - echo "Uploading artifacts.."
-      - aws s3 cp out/client/ s3://$ASSET_BUCKET --recursive
+      - aws s3 cp out/client/ s3://$ASSET_BUCKET/assets/ --recursive
