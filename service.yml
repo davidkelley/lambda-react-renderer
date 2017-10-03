@@ -98,8 +98,8 @@ Resources:
         Ref: AWS::StackName
       StageName:
         Ref: RevisionId
-      DefinitionBody:
-        swagger: "2.0"
+      # DefinitionBody:
+      #   swagger: "2.0"
       # Variables:
         # RenderFunction:
         #   Ref: Render
