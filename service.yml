@@ -20,11 +20,12 @@ Resources:
       Bucket: !Ref AssetBucket
       PolicyDocument:
         Statement:
-          - Action:
+          - Sid: AddAnonPerm
+            Action:
               - s3:GetObject
             Effect: "Allow"
             Resource:
-              - !Sub "arn:${AWS::Partition}:::${AssetBucket}/*"
+              - !Sub "${AssetBucket.Arn}/*"
             Principal: "*"
 
   AssetCDN:
@@ -41,7 +42,7 @@ Resources:
         #     ResponseCode: 200
         #     ResponsePagePath: 404-not-found.html
         Origins:
-          - DomainName: !Sub "${AssetBucket}.s3.${AWS::URLSuffix}"
+          - DomainName: !GetAtt AssetBucket.DomainName
             Id: Assets
             S3OriginConfig: {}
           - DomainName: !Sub "${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}"
