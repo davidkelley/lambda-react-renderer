@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-export default () => (
-  <h1>
-    Home
-  </h1>
-);
+import s from './Home.css';
+
+class Home extends Component {
+  render() {
+    return (
+      <div className={s.home}>
+        <h1>
+          Home
+        </h1>
+      </div>
+    );
+  }
+}
+
+export default withStyles(s)(Home);
+
+// export default Home;

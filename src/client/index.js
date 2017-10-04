@@ -1,13 +1,15 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
+import { BrowserRouter as Router, browserHistory } from 'react-router-dom';
+import { App, WithStyles } from './App';
 
 hydrate(
   (
-    <Router>
-      <App/>
-    </Router>
+    <WithStyles onInsertCss={styles => styles._insertCss()}>
+      <Router history={browserHistory}>
+        <App/>
+      </Router>
+    </WithStyles>
   ),
   document.getElementById("app")
 )

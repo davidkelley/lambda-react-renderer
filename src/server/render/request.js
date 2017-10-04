@@ -5,6 +5,10 @@ export default class {
     this.event = event;
   }
 
+  get assets() {
+    return this.event.assets;
+  }
+
   get querystring() {
     return this.event.queryStringParameters || {};
   }
@@ -18,7 +22,7 @@ export default class {
   }
 
   get client() {
-    return new Client(this.path);
+    return new Client(this);
   }
 
   async send() {
