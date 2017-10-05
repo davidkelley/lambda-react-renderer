@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const transformStats = (data, opts) => {
   const { main } = data.assetsByChunkName;
@@ -25,6 +24,7 @@ module.exports = [
     plugins: [
       new webpack.optimize.OccurrenceOrderPlugin(),
       new StatsWriterPlugin({
+        filename: '../server/stats.json',
         transform: transformStats,
       }),
       new UglifyJSPlugin(),
@@ -70,10 +70,7 @@ module.exports = [
       publicPath: '/assets/',
     },
     plugins: [
-      new UglifyJSPlugin(),
-      new CopyWebpackPlugin([
-        { from: `out/client/stats.json`, to: 'stats.json' },
-      ])
+      new UglifyJSPlugin()
     ],
     module: {
       loaders: [

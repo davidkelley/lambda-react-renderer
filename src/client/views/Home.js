@@ -16,5 +16,3 @@ class Home extends Component {
 }
 
 export default withStyles(s)(Home);
-
-// export default Home;
