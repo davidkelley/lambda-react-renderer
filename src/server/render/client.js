@@ -25,13 +25,13 @@ export default class Client {
     )
   }
 
-  // get head() {
-  //   return Helmet.renderStatic();
-  // }
+  get head() {
+    return Helmet.renderStatic();
+  }
 
   get body() {
-    const { assets, renderedHtml, css } = this;
-    return template({ assets, renderedHtml, css });
+    const { assets, renderedHtml, css, head } = this;
+    return template({ assets, renderedHtml, css, head });
   }
 
   async render() {

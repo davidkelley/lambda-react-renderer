@@ -9,7 +9,7 @@ const express = require('express');
 const config = require('./webpack.config');
 const [client, server] = config;
 
-client.entry.unshift('webpack-hot-middleware/client?name=client');
+client.entry.unshift('webpack-hot-middleware/client');
 client.plugins.push(new webpack.HotModuleReplacementPlugin());
 
 const app = express();
@@ -30,8 +30,9 @@ const parseStats = (data) => {
 }
 
 app.get('*', (req, res) => {
+  console.log(req.headers);
   /**
-   * Request the Webpack transpiled Lambda application from localhost.
+   * Request the Webpack, babel transpiled Lambda application from localhost.
    * Evaluate the returned script to load the Render function.
    * This ensures that Express acts as a drop-in replacement for API Gateway
    * instead of superceeding the Lambda function entirely.
