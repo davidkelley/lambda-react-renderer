@@ -61,6 +61,10 @@ Resources:
     Properties:
       VersioningConfiguration:
         Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Status: Enabled
+            ExpirationInDays: 1
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline

@@ -4,7 +4,7 @@ import Request from './request';
 
 const readStats = () => {
   try {
-    const stats = fs.readFileSync(`${__dirname}/stats.json`, { encoding: 'utf8' });
+    const stats = fs.readFileSync(`./stats.json`, { encoding: 'utf8' });
     return JSON.parse(stats);
   } catch (e) {
     return {};
