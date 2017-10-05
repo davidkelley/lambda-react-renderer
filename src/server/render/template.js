@@ -1,19 +1,21 @@
-export default function(props) {
-  const htmlAttrs = props.head.htmlAttributes.toString();
-  const bodyAttrs = props.head.bodyAttributes.toString();
+export default function({ head, css, html, assets }) {
+  const htmlAttrs = head.htmlAttributes.toString();
+  const bodyAttrs = head.bodyAttributes.toString();
+  const rehydratedStyles = new Buffer(JSON.stringify(css.renderedClassNames)).toString('base64');
 
   return (`
     <!DOCTYPE html>
     <html>
       <head>
-        ${props.head.title.toString()}
-        ${props.head.meta.toString()}
-        ${props.head.link.toString()}
-        <style id="critical-css" type="text/css">${props.css.join('')}</style>
+        ${head.title.toString()}
+        ${head.meta.toString()}
+        ${head.link.toString()}
+        <style data-aphrodite>${css.content}</style>
+        <meta property="css" content="${rehydratedStyles}" />
       </head>
       <body>
-        <div id="app" data-jshook="app-body">${props.renderedHtml}</div>
-        ${props.assets.js.map(a => `<script src="/assets/${a}"></script>`)}
+        <div id="app" data-jshook="app-body">${html}</div>
+        ${assets.js.map(a => `<script src="/assets/${a}"></script>`)}
       </body>
     </html>
   `);

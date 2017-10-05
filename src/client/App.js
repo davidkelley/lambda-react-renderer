@@ -7,25 +7,6 @@ import Home from './views/Home';
 import Contact from './views/Contact';
 import About from './views/About';
 
-export class WithStyles extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-    onInsertCss: PropTypes.func.isRequired,
-  };
-
-  static childContextTypes = {
-    insertCss: PropTypes.func.isRequired,
-  };
-
-  getChildContext() {
-    return { insertCss: this.props.onInsertCss };
-  }
-
-  render() {
-    return Children.only(this.props.children);
-  }
-}
-
 export class App extends Component {
   render() {
     return (

@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
-
-import s from './About.css';
+import { css, withStyles } from '../withStyles';
+import styles from './styles';
 
 class About extends Component {
   render() {
     return (
-      <div className={s.about}>
-        <h1>
+      <div>
+        <h1 {...css(this.props.styles.otherTitle)}>
           About
         </h1>
       </div>
@@ -15,4 +14,4 @@ class About extends Component {
   }
 }
 
-export default withStyles(s)(About);
+export default withStyles(styles)(About);

@@ -27,7 +27,7 @@ module.exports = [
         filename: '../server/stats.json',
         transform: transformStats,
       }),
-      new UglifyJSPlugin(),
+      // new UglifyJSPlugin(),
     ],
     module: {
       loaders: [
@@ -36,21 +36,6 @@ module.exports = [
           loader: ['babel-loader'],
           include: `${__dirname}/src`,
         },
-        {
-          test: /\.css$/,
-          use: [
-            'isomorphic-style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                localIdentName: '[name]__[local]___[hash:base64:5]',
-                importLoaders: 1
-              }
-            },
-            'postcss-loader'
-          ]
-        }
       ],
     }
   },
@@ -70,25 +55,10 @@ module.exports = [
       publicPath: '/assets/',
     },
     plugins: [
-      new UglifyJSPlugin()
+      // new UglifyJSPlugin()
     ],
     module: {
       loaders: [
-        {
-        test: /\.css$/,
-          use: [
-            'isomorphic-style-loader',
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                localIdentName: '[name]__[local]___[hash:base64:5]',
-                importLoaders: 1
-              }
-            },
-            'postcss-loader'
-          ]
-        },
         {
           test: /\.js$/,
           loader: ['babel-loader'],

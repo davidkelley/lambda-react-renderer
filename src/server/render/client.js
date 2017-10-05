@@ -1,9 +1,10 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
+import { StyleSheetServer } from 'aphrodite';
 import { StaticRouter as Router } from 'react-router';
 
-import { App, WithStyles } from '../../client/App';
+import { App } from '../../client/App';
 
 import template from './template';
 
@@ -11,27 +12,35 @@ export default class Client {
   constructor({ path, assets }) {
     this.path = path;
     this.assets = assets;
-    this.css = [];
     this.context = {};
   }
 
-  get renderedHtml() {
-    return renderToString(
-      <WithStyles onInsertCss={styles => this.css.push(styles._getCss())}>
+  get rendered() {
+    return StyleSheetServer.renderStatic(() => {
+      return renderToString(
         <Router location={this.path} context={this.context}>
           <App/>
         </Router>
-      </WithStyles>
-    )
+      );
+    });
   }
+
+  // get renderedHtml() {
+  //   return renderToString(
+  //     <Router location={this.path} context={this.context}>
+  //       <App/>
+  //     </Router>
+  //   )
+  // }
 
   get head() {
     return Helmet.renderStatic();
   }
 
   get body() {
-    const { assets, renderedHtml, css, head } = this;
-    return template({ assets, renderedHtml, css, head });
+    const { html, css } = this.rendered;
+    const { assets, head } = this;
+    return template({ assets, html, css, head });
   }
 
   async render() {
