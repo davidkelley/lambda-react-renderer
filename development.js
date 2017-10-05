@@ -30,7 +30,6 @@ const parseStats = (data) => {
 }
 
 app.get('*', (req, res) => {
-  console.log(req.headers);
   /**
    * Request the Webpack, babel transpiled Lambda application from localhost.
    * Evaluate the returned script to load the Render function.
