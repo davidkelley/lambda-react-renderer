@@ -33,8 +33,6 @@ Resources:
     Properties:
       DistributionConfig:
         Enabled: true
-        # Aliases:
-        #   - !Sub "${RenderGateway}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${RevisionId}/index"
         HttpVersion: http2
         Comment: !Sub "RevisionId: ${RevisionId}"
         # CustomErrorResponses:

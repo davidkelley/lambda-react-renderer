@@ -40,11 +40,6 @@ paths:
         - text/html
       consumes:
         - text/html
-      parameters:
-        - name: render
-          in: path
-          required: true
-          type: string
       responses:
         "200":
           description: The page was rendered successfully
