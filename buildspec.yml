@@ -26,7 +26,8 @@ phases:
       # - npm run test
 
       - echo "Packaging Client & Server..."
-      - npm run build
+      - npm run build:client
+      - npm run build:server
 
       - echo "Compiling API template..."
       - mustache build.json api.yml > out/api.yml

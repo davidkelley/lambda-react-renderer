@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-export default () => (
-  <h1>
-    About
-  </h1>
-);
+import s from './About.css';
+
+class About extends Component {
+  render() {
+    return (
+      <div className={s.about}>
+        <h1>
+          About
+        </h1>
+      </div>
+    );
+  }
+}
+
+export default withStyles(s)(About);
