@@ -11,11 +11,9 @@ const readStats = () => {
   }
 };
 
-const STATS = readStats();
-
 export default async function (event, context, cb) {
   try {
-    if (!event.stats) event.stats = STATS;
+    if (!event.stats) event.stats = readStats();
     const request = new Request(event);
     const data = await request.send();
     cb(null, data);
