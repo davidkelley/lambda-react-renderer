@@ -1,5 +1,9 @@
 version: 0.1
 
+env:
+  variables:
+    NODE_ENV: production
+    
 phases:
   install:
     commands:

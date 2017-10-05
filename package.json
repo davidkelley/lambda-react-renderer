@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "aphrodite": "^1.2.4",
-    "aws-sdk": "^2.54.0",
     "babel-preset-react": "^6.24.1",
     "babel-runtime": "6.11.6",
     "prop-types": "^15.6.0",
@@ -58,12 +57,10 @@
   },
   "jest": {
     "moduleFileExtensions": [
-      "js",
-      "hbs"
+      "js"
     ],
     "transform": {
-      "\\.js$": "babel-jest",
-      "\\.hbs$": "<rootDir>/__tests__/__utils__/templateTransformer.js"
+      "\\.js$": "babel-jest"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/__tests__/__utils__/setup.js"
   },

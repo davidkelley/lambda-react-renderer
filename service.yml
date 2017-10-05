@@ -69,6 +69,9 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: ./out/server
       Timeout: 10
+      Environment:
+        Variables:
+          NODE_ENV: production
 
   RenderLogGroup:
     Type: AWS::Logs::LogGroup
