@@ -75,10 +75,6 @@ module.exports = [
     module: {
       loaders: [
         {
-          test: /\.hbs$/,
-          loader: 'handlebars-loader',
-        },
-        {
         test: /\.css$/,
           use: [
             'isomorphic-style-loader',

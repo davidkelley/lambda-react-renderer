@@ -1,10 +1,11 @@
 import React from 'react';
+import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router';
 
 import { App, WithStyles } from '../../client/App';
 
-import template from './views/template.hbs';
+import template from './template';
 
 export default class Client {
   constructor({ path, assets }) {
@@ -23,6 +24,10 @@ export default class Client {
       </WithStyles>
     )
   }
+
+  // get head() {
+  //   return Helmet.renderStatic();
+  // }
 
   get body() {
     const { assets, renderedHtml, css } = this;
