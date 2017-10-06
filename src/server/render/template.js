@@ -1,8 +1,9 @@
-export default function({ head, css, html, assets }) {
+const encode = (obj) => new Buffer(JSON.stringify(obj)).toString('base64');
+
+export default function({ head, css, html, assets, state }) {
   const htmlAttrs = head.htmlAttributes.toString();
   const bodyAttrs = head.bodyAttributes.toString();
-  const rehydratedStyles = new Buffer(JSON.stringify(css.renderedClassNames)).toString('base64');
-
+  
   return (`
     <!DOCTYPE html>
     <html>
@@ -11,7 +12,8 @@ export default function({ head, css, html, assets }) {
         ${head.meta.toString()}
         ${head.link.toString()}
         <style data-aphrodite>${css.content}</style>
-        <meta property="css" content="${rehydratedStyles}" />
+        <meta property="css" content="${encode(css.renderedClassNames)}" />
+        <meta property="state" content="${encode(state)}" />
       </head>
       <body>
         <div id="app" data-jshook="app-body">${html}</div>

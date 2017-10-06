@@ -5,7 +5,7 @@ import { Switch, Link, Route } from 'react-router-dom';
 
 import Home from './views/Home';
 import Contact from './views/Contact';
-import About from './views/About';
+import Todos from './views/Todos';
 
 export class App extends Component {
   render() {
@@ -19,7 +19,7 @@ export class App extends Component {
 
         <ul>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
+          <li><Link to="/todos">Todos</Link></li>
           <li><Link to="/contact">Contact</Link></li>
         </ul>
 
@@ -27,7 +27,7 @@ export class App extends Component {
 
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
+          <Route path="/todos" component={Todos} />
           <Route path="/contact" component={Contact} />
         </Switch>
       </div>

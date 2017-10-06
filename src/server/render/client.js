@@ -1,65 +1,50 @@
 import React from 'react';
+import { Map } from 'immutable';
+import { Provider } from 'react-redux'
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { StyleSheetServer } from 'aphrodite';
 import { StaticRouter as Router } from 'react-router';
 
 import { App } from '../../client/App';
-
+import { configureStore } from '../../client/store';
 import template from './template';
 
 export default class Client {
-  constructor({ path, assets }) {
-    this.path = path;
+  constructor({ location = '/', assets, params = {} }) {
+    this.store = configureStore(Map(params));
+    this.location = location;
     this.assets = assets;
-    this.context = {};
   }
 
-  get rendered() {
-    return StyleSheetServer.renderStatic(() => {
-      return renderToString(
-        <Router location={this.path} context={this.context}>
+  async rendered() {
+    const { location, store } = this;
+    const { html, css } = StyleSheetServer.renderStatic(() => renderToString(
+      <Provider store={store}>
+        <Router location={location}>
           <App/>
         </Router>
-      );
-    });
+      </Provider>
+    ));
+    return { html, css, state: store.getState() };
   }
-
-  // get renderedHtml() {
-  //   return renderToString(
-  //     <Router location={this.path} context={this.context}>
-  //       <App/>
-  //     </Router>
-  //   )
-  // }
 
   get head() {
     return Helmet.renderStatic();
   }
 
-  get body() {
-    const { html, css } = this.rendered;
+  async body() {
+    const { html, css, state } = await this.rendered();
     const { assets, head } = this;
-    return template({ assets, html, css, head });
+    return template({ assets, html, css, state, head });
   }
 
   async render() {
-    const { context, body } = this;
-    if (context.url) {
-      return {
-        statusCode: 301,
-        headers: {
-          Location: context.url,
-        },
-      };
-    } else {
-      const { statusCode } = context;
-      const code = statusCode || 200;
-      const headers = {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'max-age=300, public',
-      };
-      return { statusCode: code, body, headers };
-    }
+    const body = await this.body();
+    const headers = {
+      'Content-Type': 'text/html',
+      'Cache-Control': 'max-age=300, public',
+    };
+    return { statusCode: 200, body, headers };
   }
 }

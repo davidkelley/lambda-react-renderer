@@ -9,16 +9,12 @@ export default class {
     return this.event.assets;
   }
 
-  get querystring() {
+  get params() {
     return this.event.queryStringParameters || {};
   }
 
-  get path() {
-    const path = this.event.path || '/';
-    const { querystring } = this;
-    const mapper = key => `${key}=${querystring[key]}`;
-    const query = Object.keys(querystring).map(mapper).join('&');
-    return `${path}?${query}`;
+  get location() {
+    return this.event.path || '/';
   }
 
   get client() {

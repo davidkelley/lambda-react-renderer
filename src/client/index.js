@@ -1,20 +1,31 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import { StyleSheet } from 'aphrodite';
 import { hydrate } from 'react-dom';
-import { BrowserRouter as Router, browserHistory } from 'react-router-dom';
+import { Map } from 'immutable';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { browserHistory } from 'react-router';
+
 import { App } from './App';
+import { configureStore } from './store';
 
-// console.log(document.head.querySelector("[property=css]").content);
+const decode = (enc) => JSON.parse(atob(enc));
 
-StyleSheet.rehydrate(
-  JSON.parse(atob(document.head.querySelector("[property=css]").content))
-);
+const state = Map(decode(document.head.querySelector("[property=state]").content));
+
+const styles = decode(document.head.querySelector("[property=css]").content)
+
+const store = configureStore(state);
+
+StyleSheet.rehydrate(styles);
 
 hydrate(
   (
-    <Router history={browserHistory}>
-      <App/>
-    </Router>
+    <Provider store={store}>
+      <Router history={browserHistory}>
+        <App/>
+      </Router>
+    </Provider>
   ),
   document.getElementById("app")
 )
