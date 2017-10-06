@@ -1,30 +1,37 @@
 import React from 'react';
+import { applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { StyleSheet } from 'aphrodite';
 import { hydrate } from 'react-dom';
-import { Map } from 'immutable';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { browserHistory } from 'react-router';
+import { Router } from 'react-router-dom';
+import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
+import { createBrowserHistory } from 'history';
 
 import { App } from './App';
 import { configureStore } from './store';
 
 const decode = (enc) => JSON.parse(atob(enc));
 
-const state = Map(decode(document.head.querySelector("[property=state]").content));
+const state = decode(document.head.querySelector("[property=state]").content);
 
-const styles = decode(document.head.querySelector("[property=css]").content)
+const styles = decode(document.head.querySelector("[property=css]").content);
 
-const store = configureStore(state);
+const history = createBrowserHistory();
+
+const middleware = routerMiddleware(history);
+
+const store = configureStore(state, applyMiddleware(middleware));
+
+// const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 StyleSheet.rehydrate(styles);
 
 hydrate(
   (
     <Provider store={store}>
-      <Router history={browserHistory}>
+      <ConnectedRouter history={history}>
         <App/>
-      </Router>
+      </ConnectedRouter>
     </Provider>
   ),
   document.getElementById("app")

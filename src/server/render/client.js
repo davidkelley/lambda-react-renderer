@@ -1,5 +1,4 @@
 import React from 'react';
-import { Map } from 'immutable';
 import { Provider } from 'react-redux'
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
@@ -12,16 +11,18 @@ import template from './template';
 
 export default class Client {
   constructor({ location = '/', assets, params = {} }) {
-    this.store = configureStore(Map(params));
+    const routing = { locationBeforeTransitions: location };
+    this.store = configureStore({ ...params });
     this.location = location;
     this.assets = assets;
+    this.context = {};
   }
 
   async rendered() {
-    const { location, store } = this;
+    const { location, store, context } = this;
     const { html, css } = StyleSheetServer.renderStatic(() => renderToString(
       <Provider store={store}>
-        <Router location={location}>
+        <Router location={location} context={context}>
           <App/>
         </Router>
       </Provider>
