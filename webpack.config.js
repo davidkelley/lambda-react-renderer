@@ -45,6 +45,9 @@ module.exports = [
       './handler.js',
     ],
     target: 'node',
+    node: {
+      __dirname: false
+    },
     externals: {
       'aws-sdk': 'aws-sdk',
     },
