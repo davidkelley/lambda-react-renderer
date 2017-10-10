@@ -4,7 +4,7 @@ const styles = (Theme) => ({
   },
   otherTitle: {
     color: Theme.color.secondary,
-  }
+  },
 });
 
 export default styles;

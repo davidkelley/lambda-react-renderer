@@ -3,8 +3,7 @@ import { applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { StyleSheet } from 'aphrodite';
 import { hydrate } from 'react-dom';
-import { Router } from 'react-router-dom';
-import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 import { createBrowserHistory } from 'history';
 
 import { App } from './App';
@@ -12,9 +11,9 @@ import { configureStore } from './store';
 
 const decode = (enc) => JSON.parse(atob(enc));
 
-const state = decode(document.head.querySelector("[property=state]").content);
+const state = decode(document.head.querySelector('[property=state]').content);
 
-const styles = decode(document.head.querySelector("[property=css]").content);
+const styles = decode(document.head.querySelector('[property=css]').content);
 
 const history = createBrowserHistory();
 
@@ -28,11 +27,11 @@ StyleSheet.rehydrate(styles);
 
 hydrate(
   (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <App/>
-      </ConnectedRouter>
-    </Provider>
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>
   ),
-  document.getElementById("app")
-)
+  document.getElementById('app')
+);

@@ -5,11 +5,11 @@ export default (state = [], action) => {
     case ADD_TODO:
       return state.merge({
         text: action.text,
-        completed: false
+        completed: false,
       });
     case REMOVE_TODO:
       return state.splice(action.id, 1);
     default:
-      return state
+      return state;
   }
-}
+};

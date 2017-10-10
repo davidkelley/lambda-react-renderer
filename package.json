@@ -78,7 +78,8 @@
   },
   "scripts": {
     "dev": "babel-node development.js",
-    "build:client": "webpack --config webpack.config.js --config-name client --progress --colors",
+    "build": "webpack --config webpack.config.js --progress --colors",
+    "build:client": "npm run build webpack --config webpack.config.js --config-name client --progress --colors",
     "build:server": "webpack --config webpack.config.js --config-name server --progress --colors",
     "lint": "eslint events src pages test handler.js webpack.config.js",
     "test": "NODE_ENV=test jest __tests__/.+/*.test.js --coverage --notify",

@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { css, withStyles } from '../withStyles';
-import styles from './styles';
+import s from './styles';
 
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <h1 {...css(this.props.styles.title)}>
-          Home
-        </h1>
-      </div>
-    );
-  }
-}
+const Home = ({ styles }) => (
+  <div>
+    <h1 {...css(styles.title)}>
+      Home
+    </h1>
+  </div>
+);
 
-export default withStyles(styles)(Home);
+Home.propTypes = {
+  styles: PropTypes.object.isRequired,
+};
+
+export default withStyles(s)(Home);

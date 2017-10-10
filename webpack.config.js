@@ -1,12 +1,13 @@
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const StatsWriterPlugin = require("webpack-stats-plugin").StatsWriterPlugin;
+const StatsWriterPlugin = require('webpack-stats-plugin').StatsWriterPlugin;
 
-const transformStats = (data, opts) => {
+const transformStats = (data) => {
   const { main } = data.assetsByChunkName;
   const assets = Array.isArray(main) ? main : [main];
   return JSON.stringify({
     js: assets.filter(path => path.endsWith('.js')),
+    css: assets.filter(path => path.endsWith('.css')),
   }, null, 2);
 };
 
@@ -19,7 +20,7 @@ module.exports = [
     output: {
       path: `${__dirname}/out/client`,
       filename: 'app.[hash].js',
-      publicPath: '/assets/'
+      publicPath: '/assets/',
     },
     plugins: [
       new webpack.optimize.OccurrenceOrderPlugin(),
@@ -27,7 +28,7 @@ module.exports = [
         filename: '../server/stats.json',
         transform: transformStats,
       }),
-      // new UglifyJSPlugin(),
+      new UglifyJSPlugin(),
     ],
     module: {
       loaders: [
@@ -37,7 +38,7 @@ module.exports = [
           include: `${__dirname}/src`,
         },
       ],
-    }
+    },
   },
   {
     name: 'server',
@@ -46,7 +47,7 @@ module.exports = [
     ],
     target: 'node',
     node: {
-      __dirname: false
+      __dirname: false,
     },
     externals: {
       'aws-sdk': 'aws-sdk',
@@ -57,9 +58,6 @@ module.exports = [
       filename: 'index.js',
       publicPath: '/assets/',
     },
-    plugins: [
-      // new UglifyJSPlugin()
-    ],
     module: {
       loaders: [
         {
@@ -69,5 +67,5 @@ module.exports = [
         },
       ],
     },
-  }
+  },
 ];

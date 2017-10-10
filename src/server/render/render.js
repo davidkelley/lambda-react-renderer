@@ -17,10 +17,11 @@ const STATS = readAssets();
 
 export default async function (event, context, cb) {
   try {
-    if (!event.assets) event.assets = readAssets();
-    const request = new Request(event);
-    const data = await request.send();
-    cb(null, data);
+    const data = event;
+    if (!event.assets) data.assets = STATS;
+    const request = new Request(data);
+    const response = await request.send();
+    cb(null, response);
   } catch (err) {
     cb(err);
   }

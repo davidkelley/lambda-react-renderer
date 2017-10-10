@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-
+import React from 'react';
+import PropTypes from 'prop-types';
 import { css, withStyles } from '../../withStyles';
-import styles from './styles';
+import s from './styles';
 
-class Todos extends Component {
-  render() {
-    return (
-      <div>
-        <h1 {...css(this.props.styles.title)}>
-          Todos
-        </h1>
-      </div>
-    );
-  }
-}
+const Todos = ({ styles }) => (
+  <div>
+    <h1 {...css(styles.title)}>
+      Todos
+    </h1>
+  </div>
+);
 
-export default withStyles(styles)(Todos);
+Todos.propTypes = {
+  styles: PropTypes.object.isRequired,
+};
+
+export default withStyles(s)(Todos);

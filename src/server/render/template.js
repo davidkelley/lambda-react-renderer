@@ -1,9 +1,6 @@
 const encode = (obj) => new Buffer(JSON.stringify(obj)).toString('base64');
 
-export default function({ head, css, html, assets, state }) {
-  const htmlAttrs = head.htmlAttributes.toString();
-  const bodyAttrs = head.bodyAttributes.toString();
-
+export default function ({ head, css, html, assets, state }) {
   return (`
     <!DOCTYPE html>
     <html>
@@ -18,6 +15,8 @@ export default function({ head, css, html, assets, state }) {
       <body>
         <div id="app" data-jshook="app-body">${html}</div>
         ${assets.js.map(a => `<script src="/assets/${a}"></script>`).join('')}
+        ${assets.css.map(a =>
+          `<link rel="stylesheet" type="text/css" href="/assets/${a}">`).join('')}
       </body>
     </html>
   `);

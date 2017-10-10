@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { renderToString } from 'react-dom/server';
 import { StyleSheetServer } from 'aphrodite';
@@ -11,7 +11,7 @@ import template from './template';
 
 export default class Client {
   constructor({ location = '/', assets, params = {} }) {
-    const routing = { locationBeforeTransitions: location };
+    // const routing = { locationBeforeTransitions: location };
     this.store = configureStore({ ...params });
     this.location = location;
     this.assets = assets;
@@ -23,7 +23,7 @@ export default class Client {
     const { html, css } = StyleSheetServer.renderStatic(() => renderToString(
       <Provider store={store}>
         <Router location={location} context={context}>
-          <App/>
+          <App />
         </Router>
       </Provider>
     ));
